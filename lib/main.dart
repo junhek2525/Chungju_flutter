@@ -1,8 +1,26 @@
+import 'package:chungju_lecture/login_page.dart';
+import 'package:chungju_lecture/signup_page.dart';
+import 'package:chungju_lecture/todo_local_page.dart';
+import 'package:chungju_lecture/todo_remote.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/drawer.dart';
-import 'package:untitled/setting_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+import 'home_page.dart';
+
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // ✅ .env 파일 로딩
+  await dotenv.load(fileName: '.env'); // 기본: .env
+
+  // ✅ Supabase 초기화
+  await Supabase.initialize(
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+  );
+
   runApp(const MyApp());
 }
 
@@ -13,73 +31,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'To-Do 프로젝트',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: "/",
       routes: {
-        '/': (context) => const MyHomePage(),
-        '/setting': (constext) => const SettingPage()
+        '/': (context) => const HomePage(),
+        '/todo-local': (context) => const TodoLocalPage(),
+        '/todo-remote': (context) => const TodoRemotePage(),
+        '/login': (context) => const LoginPage(),
+        '/signup': (context) => const SignUpPage()
       },
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("안녕하세요"),
-      ),
-      drawer: const MyDrawer(),
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width /2,
-                  height: 200,
-                  color: Colors.blue,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width /2,
-                  height: 200,
-                  color: Colors.red,
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width /2,
-                  height: 200,
-                  color: Colors.green,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width /2,
-                  height: 200,
-                  color: Colors.yellow,
-                )
-              ],
-            )
-          ],
-        ),
-      ),
     );
   }
 }
