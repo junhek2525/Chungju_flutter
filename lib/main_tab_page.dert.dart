@@ -1,4 +1,5 @@
 import 'package:chungju_lecture/chat_page.dert.dart';
+import 'package:chungju_lecture/chat_room_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:chungju_lecture/todo_remote.dart';
 
@@ -14,7 +15,7 @@ class _MainTabPageState extends State<MainTabPage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = const[
     TodoRemotePage(),
-    ChatPage()
+    ChatRoomListPage()
   ];
   @override
   Widget build(BuildContext context) {
